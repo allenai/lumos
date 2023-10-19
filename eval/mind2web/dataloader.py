@@ -9,7 +9,6 @@ from multiprocessing import Pool
 import lxml
 from datasets import load_dataset, Dataset
 from lxml import etree
-# from sentence_transformers import InputExample
 from torch.utils.data import DataLoader
 from datasets import Dataset
 from tqdm import tqdm
@@ -75,44 +74,7 @@ class CandidateRankDataset(Dataset):
 
 
 def get_data_split(data):
-    # def flatten_actions(samples):
-    #     outputs = {
-    #         "website": [],
-    #         "confirmed_task": [],
-    #         "annotation_id": [],
-    #         "previous_actions": [],
-    #         "action_uid": [],
-    #         "operation": [],
-    #         "pos_candidates": [],
-    #         "neg_candidates": [],
-    #         "cleaned_html": [],
-    #     }
-    #     num_actions = [len(actions) for actions in samples["actions"]]
-    #     for key in ["website", "confirmed_task", "annotation_id"]:
-    #         for idx, value in enumerate(samples[key]):
-    #             outputs[key] += [value] * num_actions[idx]
-    #     for actions, action_reprs in zip(samples["actions"], samples["action_reprs"]):
-    #         for a_idx, action in enumerate(actions):
-    #             outputs["previous_actions"].append(action_reprs[:a_idx])
-    #             for key in [
-    #                 "action_uid",
-    #                 "operation",
-    #                 "pos_candidates",
-    #                 "neg_candidates",
-    #                 "cleaned_html",
-    #             ]:
-    #                 outputs[key].append(action[key])
-    #     return outputs
-
-    # dataset = load_dataset(data_dir, data_files=split_file, split="all")
     dataset = Dataset.from_list(data)
-    print(len(dataset))
-    # flatten_dataset = dataset.map(
-    #     flatten_actions,
-    #     batched=True,
-    #     remove_columns=dataset.column_names,
-    #     batch_size=10,
-    # )
 
     def format_candidates(data):
         for i, sample in enumerate(data["actions"]):
