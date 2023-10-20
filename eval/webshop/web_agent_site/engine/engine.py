@@ -15,7 +15,7 @@ from flask import render_template_string
 from rich import print
 from pyserini.search.lucene import LuceneSearcher
 
-from web_agent_site.utils import (
+from eval.webshop.web_agent_site.utils import (
     BASE_DIR,
     DEFAULT_FILE_PATH,
     DEFAULT_REVIEW_PATH,
