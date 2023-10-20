@@ -24,7 +24,6 @@ def process_tag(x):
 
 
 def extract_key_info(env, query, previous_actions, rank, action_name=None, op=None, text=None):
-    global tot_tags, corr_em
     query_reformulate = (
         f'task is: {query}\n'
         f'Previous actions: {previous_actions}'
@@ -241,8 +240,7 @@ if __name__ == "__main__":
     parser.add_argument("--load_in_8bit", action="store_true", help="load model in 8bit mode, which will reduce memory and speed up inference.")
     parser.add_argument("--gptq", action="store_true", help="If given, we're evaluating a 4-bit quantized GPTQ model.")
     args = parser.parse_args()
-
-    global query_model 
+    
     query_model = CrossEncoder(
         "osunlp/MindAct_CandidateGeneration_deberta-v3-base",
         device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
