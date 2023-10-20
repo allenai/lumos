@@ -1,7 +1,7 @@
 import json
 import re
 import argparse
-from prompt_convertion import *
+from data.prompt_convertion import *
 
 
 def parse_subgoals(x):
