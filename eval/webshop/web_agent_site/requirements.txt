@@ -1,0 +1,8 @@
+env==0.1.0
+Flask==2.1.2
+gdown
+gradio
+pytest
+requests==2.31.0
+requests_mock
+Werkzeug==2.2.2
