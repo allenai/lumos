@@ -4,8 +4,8 @@ import re
 import json
 import random
 import evaluate
-from tqdm import tqdm
 from googlesearch import search
+from tqdm import tqdm
 from eval.utils import generate_completions, load_hf_lm_and_tokenizer
 from eval.strategyqa.qa_tool import *
 from eval.strategyqa.utils import *
@@ -251,7 +251,7 @@ def lumos_iterative(args):
                     final_pred = "false"
                 if final_pred == subgoal_action["answer"].lower():
                     corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def lumos_onetime(args):
@@ -362,7 +362,7 @@ def lumos_onetime(args):
 
             if final_pred == subgoal_action["answer"].lower():
                 corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def cot(args):
@@ -418,7 +418,7 @@ def cot(args):
 
         if all_outputs[i]["answer"] == ans:
             corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def direct(args):
@@ -472,7 +472,7 @@ def direct(args):
         ans = outputs[i][pos_ans: -1]
         if all_outputs[i]["answer"] == ans:
             corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
     
 
 if __name__ == "__main__":
