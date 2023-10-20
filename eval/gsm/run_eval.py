@@ -114,17 +114,17 @@ def lumos_iterative(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i % 2 == 0:
-                # maths_plan_081722
-                # unified_maths_web_agent_complex_qa_plan_091300
-                model_name_or_path = os.path.join(args.model_name_or_path, f"maths_plan_{args.model_size}")
+                model_name_or_path = os.path.join(args.model_name_or_path, "maths_plan_llama-2-7b")
             else:
-                # maths_ground_081722
-                # unified_maths_web_agent_complex_qa_ground_091300
-                model_name_or_path = os.path.join(args.model_name_or_path, f"maths_ground_{args.model_size}")
+                model_name_or_path = os.path.join(args.model_name_or_path, "maths_ground_llama-2-7b")
+            
+            if args.finetune_method == "lora":
+                model_name_or_path += "_lora"
+                model_name_or_path += "_lora"
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
-                model_name_or_path=model_name_or_path, 
+                tokenizer_name_or_path=model_name_or_path, 
                 load_in_8bit=args.load_in_8bit, 
                 load_in_half=True,
                 gptq_model=args.gptq
@@ -200,7 +200,7 @@ def lumos_iterative(args):
                                     "subgoals": subgoal_action["subgoals"], 
                                     "actions": subgoal_action["actions"]
                                     })+'\n')
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def lumos_onetime(args):
@@ -240,6 +240,7 @@ def lumos_onetime(args):
 
         if i == 0:
             for j, example in enumerate(test_data):
+                # print(example["question"].strip())
                 all_subgoals_actions.append({"question": example["question"].strip(), "answer": example["answer"], "subgoals": [], "actions": [], "results": dict()})
                 plan_prompt = "<|user|>\n" + prompt_prefix + "Task: " + example["question"].strip() + "; Initial Environment Description: None.\n<|assistant|>\n"
                 plan_prompts.append(plan_prompt)
@@ -251,11 +252,9 @@ def lumos_onetime(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i == 0:
-                # maths_plan_onetime_091300
-                model_name_or_path = os.path.join(args.model_name_or_path, f"maths_plan_onetime_{args.model_size}")
+                model_name_or_path = os.path.join(args.model_name_or_path, "maths_plan_onetime_llama-2-7b")
             else:
-                # maths_ground_onetime_091300
-                model_name_or_path = os.path.join(args.model_name_or_path, f"maths_ground_onetime_{args.model_size}")
+                model_name_or_path = os.path.join(args.model_name_or_path, "maths_ground_onetime_llama-2-7b")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
@@ -324,7 +323,7 @@ def lumos_onetime(args):
                                     "subgoals": subgoal_action["subgoals"], 
                                     "actions": subgoal_action["actions"]
                                     })+'\n')
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def cot(args):
@@ -358,7 +357,7 @@ def cot(args):
 
     if args.model_name_or_path:
         print("Loading model and tokenizer...")
-        model_name_or_path = os.path.join(args.model_name_or_path, f"maths_cot_{args.model_size}")
+        model_name_or_path = os.path.join(args.model_name_or_path, "maths_cot_llama-2-7b")
         
         model, tokenizer = load_hf_lm_and_tokenizer(
             model_name_or_path=model_name_or_path, 
@@ -385,7 +384,7 @@ def cot(args):
 
         if all_outputs[i]["answer"] == ans:
             corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def direct(args):
@@ -419,7 +418,7 @@ def direct(args):
 
     if args.model_name_or_path:
         print("Loading model and tokenizer...")
-        model_name_or_path = os.path.join(args.model_name_or_path, f"maths_direct_{args.model_size}")
+        model_name_or_path = os.path.join(args.model_name_or_path, "maths_direct_llama-2-7b")
         
         model, tokenizer = load_hf_lm_and_tokenizer(
             model_name_or_path=model_name_or_path, 
@@ -444,7 +443,7 @@ def direct(args):
         ans = outputs[i][pos_ans: -1]
         if all_outputs[i]["answer"] == ans:
             corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
     
 
 if __name__ == "__main__":
@@ -452,10 +451,8 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str)
     parser.add_argument("--max_num_examples", type=int, default=None, help="maximum number of examples to evaluate.")
     parser.add_argument("--save_dir", type=str)
-    parser.add_argument("--model_size", type=str, default="7B")
     parser.add_argument("--model_name_or_path", type=str, default=None, help="if specified, we will load the model to generate the predictions.")
     parser.add_argument("--eval_batch_size", type=int, default=1, help="batch size for evaluation.")
-    parser.add_argument("--base_model", type=str, default='llama', help="base model.")
     parser.add_argument("--formulation", type=str, default='lumos_iterative', help="considered formulation.")
     parser.add_argument("--load_in_8bit", action="store_true", help="load model in 8bit mode, which will reduce memory and speed up inference.")
     parser.add_argument("--gptq", action="store_true", help="If given, we're evaluating a 4-bit quantized GPTQ model.")
@@ -470,4 +467,3 @@ if __name__ == "__main__":
         cot(args)
     elif args.formulation == "direct":
         direct(args)
-
