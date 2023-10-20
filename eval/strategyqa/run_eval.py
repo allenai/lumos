@@ -4,6 +4,7 @@ import re
 import json
 import random
 import evaluate
+from tqdm import tqdm
 from googlesearch import search
 from eval.utils import generate_completions, load_hf_lm_and_tokenizer
 from eval.strategyqa.qa_tool import *
