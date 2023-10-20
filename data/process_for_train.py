@@ -376,7 +376,7 @@ def collect_unified_data(domains):
                 unified_data[module] += [json.loads(d) for d in f]
 
     for module in ["plan", "ground"]:
-        with open(f"data/train/unified/train_annots/unified_{'_'.join(domains)}_{module}.jsonl", "w") as f:
+        with open(f"data/train/unified/train_annots/unified_{module}.jsonl", "w") as f:
             for d in unified_data[module]:
                 f.write(json.dumps(d)+'\n')
 
