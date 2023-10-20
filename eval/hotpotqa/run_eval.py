@@ -4,9 +4,10 @@ import re
 import json
 import random
 import string
-from tqdm import tqdm
+import evaluate
 from googlesearch import search
 from collections import Counter
+from tqdm import tqdm
 from eval.hotpotqa.qa_tool import *
 from eval.hotpotqa.utils import *
 from eval.utils import generate_completions, load_hf_lm_and_tokenizer
@@ -324,7 +325,7 @@ def lumos_iterative(args):
                 if norm_ans == norm_pred:
                     em += 1
                 llm_acc += llm_accuracy_score(subgoal_action["question"], pred, subgoal_action["answer"])
-    print(em, llm_acc)
+    print("EM:", em, "LLM_Acc:", llm_acc)
 
 
 def lumos_onetime(args):
@@ -440,7 +441,7 @@ def lumos_onetime(args):
                     llm_acc += llm_accuracy_score(subgoal_action["question"], pred, subgoal_action["answer"])
                 except:
                     continue
-    print(em, llm_acc)
+    print("EM:", em, "LLM_Acc:", llm_acc)
 
 
 def cot(args):
@@ -511,7 +512,7 @@ def cot(args):
                 llm_acc += llm_accuracy_score(all_outputs[i]["question"], pred, all_outputs[i]["answer"])
             except:
                 continue
-    print(em, llm_acc)
+    print("EM:", em, "LLM_Acc:", llm_acc)
 
 
 def direct(args):
@@ -579,7 +580,7 @@ def direct(args):
             if norm_ans == norm_pred:
                 em += 1
             llm_acc += llm_accuracy_score(all_outputs[i]["question"], pred, all_outputs[i]["answer"])
-    print(em, llm_acc)
+    print("EM:", em, "LLM_Acc:", llm_acc)
     
 
 if __name__ == "__main__":
