@@ -5,6 +5,7 @@ import json
 import random
 import evaluate
 import torch
+from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from eval.utils import generate_completions, load_hf_lm_and_tokenizer
 from eval.svamp.math_tool import *
@@ -107,12 +108,8 @@ def lumos_iterative(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i % 2 == 0:
-                # maths_plan_081722
-                # unified_maths_web_agent_complex_qa_plan_091300
                 model_name_or_path = os.path.join(args.model_name_or_path, "maths_plan_llama-2-7b")
             else:
-                # maths_ground_081722
-                # unified_maths_web_agent_complex_qa_ground_091300
                 model_name_or_path = os.path.join(args.model_name_or_path, "maths_ground_llama-2-7b")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
@@ -193,7 +190,7 @@ def lumos_iterative(args):
                                     "subgoals": subgoal_action["subgoals"], 
                                     "actions": subgoal_action["actions"]
                                     })+'\n')
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def lumos_onetime(args):
@@ -239,10 +236,8 @@ def lumos_onetime(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i == 0:
-                # maths_plan_onetime_091300
                 model_name_or_path = os.path.join(args.model_name_or_path, "maths_plan_onetime_llama-2-7b")
             else:
-                # maths_plan_onetime_091300
                 model_name_or_path = os.path.join(args.model_name_or_path, "maths_ground_onetime_llama-2-7b")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
@@ -312,7 +307,7 @@ def lumos_onetime(args):
                                     "subgoals": subgoal_action["subgoals"], 
                                     "actions": subgoal_action["actions"]
                                     })+'\n')
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def cot(args):
@@ -368,7 +363,7 @@ def cot(args):
 
         if all_outputs[i]["answer"] == ans:
             corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
 
 
 def direct(args):
@@ -422,7 +417,7 @@ def direct(args):
         ans = outputs[i][pos_ans: -1]
         if all_outputs[i]["answer"] == ans:
             corr += 1
-    print(corr)
+    print("Acc:", corr*1./len(test_data))
     
 
 if __name__ == "__main__":
