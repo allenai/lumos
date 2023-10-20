@@ -4,7 +4,7 @@ import re
 import json
 import random
 import string
-import evaluate
+from tqdm import tqdm
 from googlesearch import search
 from collections import Counter
 from eval.hotpotqa.qa_tool import *
