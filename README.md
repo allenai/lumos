@@ -33,6 +33,51 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular*
   - 🤗 **Lumos** training annotations and their raw data
  
 ## 🧩 Architecture
+<p align="center">
+<img src=assets/lumos.png />
+</p>
+
+## Setup
+```
+./setup.sh
+```
+Please make sure that the cudatoolkit version in `setup.sh` aligns with your local cuda version.
+
+## Training
+### 📈 Training Data Download
+We collect all the training annotations, raw data and prompt converted annotations in a single [Google Drive folder](https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing). It can be downloaded by
+```
+cd data
+python -c "import gdown; gdown.download_folder('https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing', quiet=True)" 
+```
+
+We also provide generated annotations for planning and grounding modules in 🤗 Huggingface Datasets. Here're the annotations we release:
+| Dataset Names | 🤗 Huggingface Datasets Link  |
+|----------------|----------------|
+| lumos-complex_qa    |  Planning: , Grounding:        |
+| lumos-complex_qa-onetime         |  Planning: , Grounding:         |
+| lumos-web_agent  |  Planning: , Grounding:     |
+| lumos-maths         |  Planning: , Grounding:        |
+| lumos-maths-onetime         |  Planning: , Grounding:        |
+| lumos-unified     | Planning: , Grounding:       |
+
+### 🧑‍🎓️ Train Modules with Generated Annotation
 
 
-## Training Paradigm
+
+## Evaluation
+
+
+## Others
+### 📈 Data Annotation Generation
+We provide the code for generating training annotations based on raw existing benchmarks from scratch. 
+
+Before generating annotations, we first need to download the existing benchmarks providing ground-truth intermediate reasoning steps. 
+The raw data are can be downloaded via this [Google Drive folder](https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing).
+```
+python -m data.prompt_convertion \
+  --domain DOMAIN \
+  --data_fn DATA_FN \
+  --convert_all
+```
+`data_fn` is the path you store the raw benchmarks.
