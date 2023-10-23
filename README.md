@@ -76,7 +76,7 @@ We also provide generated annotations for planning and grounding modules in 🤗
 ```
 ./train.sh [MODULE] [FORMULATION]
 ```
-`\[MODULE\]` can be either `plan` or `ground`. `\[FORMULATION\]` can be either `iterative` or `onetime`.
+`[MODULE]` can be either `plan` or `ground`. `[FORMULATION]` can be either `iterative` or `onetime`.
 
 You can adjust the fine-tuning hyperparameters and specific task you want to fine-tune in the training scripts such as `finetune_llama2_plan_iterative.sh` in [`scripts/train`](./scripts/train).
 
