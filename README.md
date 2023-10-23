@@ -22,7 +22,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular*
 * 🌍 **Diverse Training Data**:
   - **Lumos** is trained with ~40K high-quality annotations from ground-truth reasoning steps in existing benchmarks with GPT-4. 
 * 🚀 **Competitive Performance**:
-  - 🚀 **Lumos** outperforms **GPT-4/3.5-based** agents on complex QA and web agent tasks, and larger open agents on maths tasks.
+  - 🚀 **Lumos** outperforms **GPT-4/3.5-based** agents on complex QA and web agent tasks, and **larger open agents** on maths tasks.
   - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **unmodularized** training.
   - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
  
