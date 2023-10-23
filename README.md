@@ -25,6 +25,17 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular*
   - 🚀 **Lumos** outperforms **GPT-4/3.5-based** agents on complex QA and web agent tasks, and larger open agents on maths tasks.
   - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **unmodularized** training.
   - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
+ 
+### Citation
+
+If you find this work is relevant with your research, please feel free to cite our work!
+```
+@article{yin2023lumos,
+  title={Lumos: Towards Language Agents that are Unified, Modular, and Open Source},
+  author={Yin, Da and Brahman, Faeze and Ravichander, Abhilasha and Chandu, Khyathi and Chang, Kai-Wei and Choi, Yejin and Lin, Bill Yuchen},
+  year={2023}
+}
+```
 
 ## 🔥 News
 - **[2023, Oct ]** We release the important items for training and evaluating **Lumos**:
@@ -34,7 +45,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular*
  
 ## 🧩 Architecture
 <p align="center">
-<img src=assets/lumos.png />
+<img src=assets/lumos.png width=800/>
 </p>
 
 ## Setup
@@ -52,21 +63,28 @@ python -c "import gdown; gdown.download_folder('https://drive.google.com/drive/f
 ```
 
 We also provide generated annotations for planning and grounding modules in 🤗 Huggingface Datasets. Here're the annotations we release:
-| Dataset Names | 🤗 Huggingface Datasets Link  |
+| Dataset Names | 🤗 Huggingface Links  |
 |----------------|----------------|
-| lumos-complex_qa    |  Planning: , Grounding:        |
-| lumos-complex_qa-onetime         |  Planning: , Grounding:         |
-| lumos-web_agent  |  Planning: , Grounding:     |
-| lumos-maths         |  Planning: , Grounding:        |
-| lumos-maths-onetime         |  Planning: , Grounding:        |
-| lumos-unified     | Planning: , Grounding:       |
+| lumos_complex_qa_iterative    |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_iterative)        |
+| lumos_complex_qa_onetime         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_onetime), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_onetime)         |
+| lumos_web_agent_iterative  |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_web_agent_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_web_agent_ground_iterative)     |
+| lumos_maths_iterative         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_maths_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_maths_ground_iterative)       |
+| lumos_maths_onetime         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_maths_plan_onetime), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_maths_ground_onetime)    |
+| lumos_unified_iterative     | [Planning](https://huggingface.co/datasets/ai2lumos/lumos_unified_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_unified_ground_iterative)    |
 
 ### 🧑‍🎓️ Train Modules with Generated Annotation
+```
+./train.sh [MODULE] [FORMULATION]
+```
+`\[MODULE\]` can be either `plan` or `ground`. `\[FORMULATION\]` can be either `iterative` or `onetime`.
 
-
+You can adjust the fine-tuning hyperparameters and specific task you want to fine-tune in the training scripts such as `finetune_llama2_plan_iterative.sh` in [`scripts/train`](./scripts/train).
 
 ## Evaluation
-
+Evaluation scripts for different datasets are under [`scripts/eval`](./scripts/eval). For example, you can evaluate Lumos on HotpotQA by running:
+```
+./hotpotqa.sh
+```
 
 ## Others
 ### 📈 Data Annotation Generation
@@ -80,4 +98,4 @@ python -m data.prompt_convertion \
   --data_fn DATA_FN \
   --convert_all
 ```
-`data_fn` is the path you store the raw benchmarks.
+`domain` covers maths, complex QA and web agent. `data_fn` is the path where raw benchmarks are stored.
