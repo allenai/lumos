@@ -1,4 +1,4 @@
-# 🪄 Lumos
+# 🪄 Lumos: Language Agents with Unified Formats, Modular Design, and Open-Source LLMs
 <p align="center">
   <a href="">
     <img src="https://img.shields.io/badge/🌐-Website-red">
@@ -18,7 +18,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular*
 
 **Lumos** has following features:
 * 🧩 **Modular Architecture**:
-  - **Lumos** consists planning, grounding, and execution modules built based on open LLMs such as LLAMA-2.
+  - **Lumos** consists of planning, grounding, and execution modules built based on LLAMA-2-7B.
 * 🌍 **Diverse Training Data**:
   - **Lumos** is trained with ~40K high-quality annotations from ground-truth reasoning steps in existing benchmarks with GPT-4. 
 * 🚀 **Competitive Performance**:
@@ -62,7 +62,7 @@ cd data
 python -c "import gdown; gdown.download_folder('https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing', quiet=True)" 
 ```
 
-We also provide generated annotations for planning and grounding modules in 🤗 Huggingface Datasets. Here're the annotations we release:
+We also provide generated annotations for planning and grounding modules in 🤗 Huggingface Datasets. 
 | Dataset Names | 🤗 Huggingface Links  |
 |----------------|----------------|
 | lumos_complex_qa_iterative    |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_iterative)        |
@@ -79,6 +79,16 @@ We also provide generated annotations for planning and grounding modules in 🤗
 `\[MODULE\]` can be either `plan` or `ground`. `\[FORMULATION\]` can be either `iterative` or `onetime`.
 
 You can adjust the fine-tuning hyperparameters and specific task you want to fine-tune in the training scripts such as `finetune_llama2_plan_iterative.sh` in [`scripts/train`](./scripts/train).
+
+We also provide the fine-tuned planning and grounding module checkpoints in 🤗 Huggingface.
+| Model Names | 🤗 Huggingface Links  |
+|----------------|----------------|
+| lumos_complex_qa_iterative    |  [Planning](https://huggingface.co/ai2lumos/lumos_complex_qa_plan_iterative), [Grounding](https://huggingface.co/ai2lumos/lumos_complex_qa_ground_iterative)        |
+| lumos_complex_qa_onetime         |  [Planning](https://huggingface.co/ai2lumos/lumos_complex_qa_plan_onetime), [Grounding](https://huggingface.co/ai2lumos/lumos_complex_qa_ground_onetime)         |
+| lumos_web_agent_iterative  |  [Planning](https://huggingface.co/ai2lumos/lumos_web_agent_plan_iterative), [Grounding](https://huggingface.co/ai2lumos/lumos_web_agent_ground_iterative)     |
+| lumos_maths_iterative         |  [Planning](https://huggingface.co/ai2lumos/lumos_maths_plan_iterative), [Grounding](https://huggingface.co/ai2lumos/lumos_maths_ground_iterative)       |
+| lumos_maths_onetime         |  [Planning](https://huggingface.co/ai2lumos/lumos_maths_plan_onetime), [Grounding](https://huggingface.co/ai2lumos/lumos_maths_ground_onetime)    |
+| lumos_unified_iterative     |  [Planning](https://huggingface.co/ai2lumos/lumos_unified_plan_iterative), [Grounding](https://huggingface.co/ai2lumos/lumos_unified_ground_iterative)    |
 
 ## Evaluation
 Evaluation scripts for different datasets are under [`scripts/eval`](./scripts/eval). For example, you can evaluate Lumos on HotpotQA by running:
