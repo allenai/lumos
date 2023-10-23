@@ -1,0 +1,1 @@
+sh scripts/train/finetune_llama2_$1_$2.sh
