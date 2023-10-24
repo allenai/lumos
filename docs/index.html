@@ -1,1 +1,453 @@
-TBA
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Deformable Neural Radiance Fields creates free-viewpoint portraits (nerfies) from casually captured videos.">
+  <meta name="keywords" content="Nerfies, D-NeRF, NeRF">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumos: Language Agents with Unified Formats, Modular Design, and Open-Source LLMs</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/dynosaur.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  
+<!--   <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+      
+    </div>
+
+  </div> -->
+  
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Lumos: Language Agents with Unified Formats, Modular Design, and Open-Source LLMs</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://wadeyin9712.github.io/">Da Yin</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://fabrahman.github.io/">Faeze Brahman</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://www.cs.cmu.edu/~aravicha/">Abhilasha Ravichander</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.cs.cmu.edu/~kchandu/">Khyathi Chandu</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="http://web.cs.ucla.edu/~kwchang/">Kai-Wei Chang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://homes.cs.washington.edu/~yejin/">Yejin Choi</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yuchenlin.xyz/">Bill Yuchen Lin</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>UCLA,</span>
+            <span class="author-block"><sup>2</sup>AI2</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Model Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/models?sort=trending&search=ai2lumos"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>Model</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+<!--               <span class="link-block">
+                <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/allenai/lumos"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href="https://huggingface.co/datasets?sort=trending&search=ai2lumos"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a>
+              </span>
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-twitter"></i>
+                  </span>
+                  <span>Twitter</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
+        free-viewpoint
+        portraits.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-steve">
+          <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/steve.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-chair-tp">
+          <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/chair-tp.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-shiba">
+          <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/shiba.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-fullbody">
+          <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/fullbody.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-blueshirt">
+          <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/blueshirt.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-mask">
+          <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/mask.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-coffee">
+          <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/coffee.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-toby">
+          <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/toby2.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+        <div class="content has-text-justified">
+          We introduce 🪄<span class="dnerf">Lumos</span>, Language Agents with Unified Formats, Modular Design, and Open-Source LLMs. Lumos unifies a suite of complex interactive tasks and achieves competitive performance with GPT-4/3.5-based and larger open-source agents. 
+          <br><br><span class="dnerf">Lumos</span> has following features: 
+          <ul>
+            <li><strong>🧩 Modular Architecture</strong>
+              <br>&nbsp &nbsp - Less than $12 for generating 800K instruction-tuning data</li> 
+            <li><strong>🌍 Diverse Training Data</strong>
+              <br>&nbsp &nbsp - Higher validity than Self-Instruct</li>
+            <li><strong>🚀 Competitive Performance</strong>
+              <br>&nbsp &nbsp - Continuously producing instructions over new datasets from Huggingface Datasets</li>
+          </ul>
+          <br>
+          An ever-growing instruction-tuning dataset provides an opportunity to dynamically and continuously improve instruction-following models. We also perform analysis to study the proper replay strategy for better generalizability and less forgetting issues.
+         </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+<!--     <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+  
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3"><span class="dnerf">Dynosaur</span> Collection Method</h2>
+        <img src="static/images/intro.png" width="100%" align="middle" class="center"/>
+        <div class="content has-text-justified">
+          The collection process of <span class="dnerf">Dynosaur</span> consists of following steps: 
+          <ul>
+            <li><strong>Metadata collection:</strong>
+              <br>&nbsp &nbsp - Collect dataset name, description, data fields and dataset annotations from Huggingface</li> 
+            <li><strong>Instruction and input/output field generation:</strong>
+              <br>&nbsp &nbsp - Prompting LLMs with metadata and outputing multiple instructions and input/output fields</li>
+            <li><strong>Filtering out invalid instruction data:</strong>
+              <br>&nbsp &nbsp - Filtering out duplicate instructions and the ones with invalid input/output fields</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Generated Instruction Cases</h2>
+        <img src="static/images/case_study.png" class="center">
+        <div class="content has-text-justified">
+          <p>
+            In Example 1, LLMs infer from the dataset name that it is about anaphor agreement and include this information in the instruction. In Example 2, LLMs create the task of paraphrase identification by understanding the relationship between the fields "sentence1" and "sentence2" implied in the dataset description. Under the description-unaware setting like Example 3, tasks can be generated based on the names of data fields.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Results</h2>
+        <div class="content has-text-justified">
+        <img src="static/images/superni_results.png" class="center">
+          <p>
+            We first evaluate models trained with Dynosaur on Super-NI (a.k.a. NIV2) to examine its ability to solve NLP tasks. We first find that We fine-tune T5-3B and LLAMA-7B 
+            with different datasets and compare performance on Super-NI and User-Instruction-252. 
+            We observe that on Super-NI, both models fine-tuned with Dynosaur data outperform Alpaca, Instruction GPT-4 and Dolly that are much more expensive to be collected. 
+            In particular, training T5-3B with Dynosaur brings at least 2.5-22 ROUGE-L improvement than baselines.
+          </p>
+          <br>
+          <img src="static/images/user_results.png" class="center">
+          <p>
+            Dynosaur targets on task solving and contains fewer instructions on user assistance (like writing emails and organizing data), but we also notice that on User-Instruction-252, Dynosaur can be exploited as additional training data to achieve higher performance than solely training with either Alpaca or Instruction GPT-4.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!--/ Results. -->
+
+</section>
+  
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Analysis</h2>
+        <div class="content has-text-justified">
+          <p align="center">
+           <img src="static/images/cost.png" width="400" class="center">
+          </p>
+          <p>
+            We calculate the cost of generating all the Dynosaur instructions and a subset for Super-NI fine-tuning. Dynosaur can bring better performance with much less generation cost.
+          </p>
+          <p align="center">
+           <img src="static/images/validity.png" width="400" class="center"> <!-- To .gif format-->
+          </p>
+          <p>
+            We also recruit human annotators to evaluate (instruction, input, output) pairs. We find that our method is found to be completely correct in 79% of instances, a substantial improvement over the 54% reported in Self-Instruct.
+          </p>
+          <p align="center">
+             <img src="static/images/continual_learning.png" class="center"> <!-- To .gif format-->
+          </p>
+          <p>
+            As Dynosaur can expand over time as new tasks come in, an important question is how to adapt a trained instruction-following model to new tasks without suffering from catastrophic forgetting.
+          </p>
+          <p>
+            Experiments on Super-NI show that replaying is an effective method to improve generalization ability and mitigate forgetting issues. For instruction tuning, we further design to select replay tasks based on instruction representations. 
+            Results show that selecting the most diverse instruction representations can be better than selecting based on data representation diversity.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!--/ Results. -->
+
+</section>
+
+  
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+    @article{yin2023dynosaur,
+      title={Dynosaur: A Dynamic Growth Paradigm for Instruction-Tuning Data Curation},
+      author={Yin, Da and Liu, Xiao and Yin, Fan and Zhong, Ming and Bansal, Hritik and Han, Jiawei and Chang, Kai-Wei},
+      year={2023}
+    }
+    </code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://allenai.github.io/lumos">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/allenai/lumos" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
