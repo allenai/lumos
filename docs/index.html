@@ -271,14 +271,17 @@
           <br><br><span class="dnerf">Lumos</span> has following features: 
           <ul>
             <li><strong>🧩 Modular Architecture</strong>
-              <br>&nbsp &nbsp - Less than $12 for generating 800K instruction-tuning data</li> 
+              <br>&nbsp &nbsp - <strong>Lumos</strong> consists of planning, grounding, and execution modules built based on LLAMA-2-7B.
+            </li> 
             <li><strong>🌍 Diverse Training Data</strong>
-              <br>&nbsp &nbsp - Higher validity than Self-Instruct</li>
+              <br>&nbsp &nbsp - <strong>Lumos</strong> is trained with ~40K high-quality annotations from ground-truth reasoning steps in existing benchmarks with GPT-4.
+            </li>
             <li><strong>🚀 Competitive Performance</strong>
-              <br>&nbsp &nbsp - Continuously producing instructions over new datasets from Huggingface Datasets</li>
+              <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> outperforms GPT-4/3.5-based agents on complex QA and web agent tasks, and larger open agents on maths tasks.
+              <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> performs better than open agent baseline formulations including chain-of-thoughts and unmodularized training.
+              <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
+            </li>
           </ul>
-          <br>
-          An ever-growing instruction-tuning dataset provides an opportunity to dynamically and continuously improve instruction-following models. We also perform analysis to study the proper replay strategy for better generalizability and less forgetting issues.
          </div>
     </div>
     <!--/ Abstract. -->
@@ -296,23 +299,38 @@
     <!--/ Paper video. -->
   </div>
 </section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>
+    @article{yin2023lumos,
+      title={Lumos: Towards Language Agents that are Unified, Modular, and Open Source},
+      author={Yin, Da and Brahman, Faeze and Ravichander, Abhilasha and Chandu, Khyathi and Chang, Kai-Wei and Choi, Yejin and Lin, Bill Yuchen},
+      year={2023}
+    }
+    </code></pre>
+  </div>
+</section>
+
   
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Results. -->
     <div class="columns is-centered">
       <div class="column has-text-centered">
-        <h2 class="title is-3"><span class="dnerf">Dynosaur</span> Collection Method</h2>
-        <img src="static/images/intro.png" width="100%" align="middle" class="center"/>
+        <h2 class="title is-3"><span class="dnerf">Lumos</span> Architecture</h2>
+        <img src="../assets/lumos_formulation.png" width="100%" align="middle" class="center"/>
         <div class="content has-text-justified">
-          The collection process of <span class="dnerf">Dynosaur</span> consists of following steps: 
+          <strong>Lumos</strong> consists of following modules: 
           <ul>
-            <li><strong>Metadata collection:</strong>
-              <br>&nbsp &nbsp - Collect dataset name, description, data fields and dataset annotations from Huggingface</li> 
-            <li><strong>Instruction and input/output field generation:</strong>
-              <br>&nbsp &nbsp - Prompting LLMs with metadata and outputing multiple instructions and input/output fields</li>
-            <li><strong>Filtering out invalid instruction data:</strong>
-              <br>&nbsp &nbsp - Filtering out duplicate instructions and the ones with invalid input/output fields</li>
+            <li><strong>Planning Module:</strong>
+              <br>&nbsp &nbsp - Decompose a complex task into a series of high-level subgoals, which are written in natural language.</li> 
+            <li><strong>Grounding Module:</strong>
+              <br>&nbsp &nbsp - Convert the high-level subgoals produced by the planning module to low-level executable actions.</li>
+            <li><strong>Execution Module:</strong>
+              <br>&nbsp &nbsp - Parse actions to a series of external tools including APIs, small neural models, and virtual simulators that interact with relevant tools and external environment.</li>
           </ul>
         </div>
       </div>
@@ -325,12 +343,34 @@
     <!-- Results. -->
     <div class="columns is-centered">
       <div class="column has-text-centered">
-        <h2 class="title is-3">Generated Instruction Cases</h2>
-        <img src="static/images/case_study.png" class="center">
+        <h2 class="title is-3">Lumos Formulation</h2>
+        <img src="static/images/lumos_formulation.png" class="center">
         <div class="content has-text-justified">
-          <p>
-            In Example 1, LLMs infer from the dataset name that it is about anaphor agreement and include this information in the instruction. In Example 2, LLMs create the task of paraphrase identification by understanding the relationship between the fields "sentence1" and "sentence2" implied in the dataset description. Under the description-unaware setting like Example 3, tasks can be generated based on the names of data fields.
-          </p>
+          We attempt the following two <strong>Lumos</strong> formulations: 
+          <ul>
+            <li><strong>Lumos-Iterative (Lumos-I):</strong>
+              <br>&nbsp &nbsp - Generates one subgoal and its corresponding executable actions in each iteration according to the external environment and prior memory. 
+              <br>&nbsp &nbsp - When generating the current t-th subgoal, the planning module requires the previous planned subgoals and the execution results of their grounded actions.</li>
+            <li><strong>Lumos-Onetime (Lumos-O):</strong>
+              <br>&nbsp &nbsp - An efficient formulation that generates all the subgoals and grounded actions at once.</li> 
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Results. -->
+    <div class="columns is-centered">
+      <div class="column has-text-centered">
+        <h2 class="title is-3">Lumos Training Annotations</h2>
+        <img src="static/images/lumos_annotation_example.png" class="center">
+        <div class="content has-text-justified">
+          Instead of using Self-Instruct method, we use LLMs to convert ground-truth intermediate reasoning steps into the expected high-quality annotations aligning with our proposed formulations. 
+          <br>
+          Finally, we are able to generate ~40K annotations to train Lumos planning and grounding modules (one of the largest resources for language agent fine-tuning). See our final annotation data in <a href="https://huggingface.co/datasets?search=ai2lumos">Huggingface Dataset</a> and prompt details in <a href="https://github.com/allenai/lumos/tree/main/data">Github</a>.
         </div>
       </div>
     </div>
@@ -344,17 +384,30 @@
       <div class="column has-text-centered">
         <h2 class="title is-3">Results</h2>
         <div class="content has-text-justified">
-        <img src="static/images/superni_results.png" class="center">
+        <img src="static/images/lumos_results_1.png" class="center">
           <p>
-            We first evaluate models trained with Dynosaur on Super-NI (a.k.a. NIV2) to examine its ability to solve NLP tasks. We first find that We fine-tune T5-3B and LLAMA-7B 
-            with different datasets and compare performance on Super-NI and User-Instruction-252. 
-            We observe that on Super-NI, both models fine-tuned with Dynosaur data outperform Alpaca, Instruction GPT-4 and Dolly that are much more expensive to be collected. 
-            In particular, training T5-3B with Dynosaur brings at least 2.5-22 ROUGE-L improvement than baselines.
+            We first evaluate <strong>Lumos</strong> on complex QA, web agent and maths tasks. We find that <strong>Lumos</strong> outperforms GPT-4/3.5-based agents on complex QA and web agent tasks.
+            In particular, <strong>Lumos</strong> outperforms GPT-4 5.1 step success rate on Mind2Web and GPT-3.5-turbo-based ReAct 5.1 LLM accuracy. <strong>Lumos</strong> also achieves better performance than 2-4x bigger language agents on maths tasks.
           </p>
           <br>
-          <img src="static/images/user_results.png" class="center">
+          <img src="static/images/lumos_results_2.png" class="center">
           <p>
-            Dynosaur targets on task solving and contains fewer instructions on user assistance (like writing emails and organizing data), but we also notice that on User-Instruction-252, Dynosaur can be exploited as additional training data to achieve higher performance than solely training with either Alpaca or Instruction GPT-4.
+            We compare <strong>Lumos</strong> formulation with other baseline formulations to train open-source agents. The baseline formulations are Vanilla Training (Van-T), Chain-of-Thought Training (CoT-T), 
+            and Unmodularized Agent Training (UA-T). <strong>Lumos</strong> performs the best among the baselines on three different complex interative tasks.
+          </p>
+          <img src="static/images/lumos_results_3.png" class="center">
+          <p>
+            We first evaluate <strong>Lumos</strong> trained with the unified annotations composed by task-specific ones. We find that after the unified training, <strong>Lumos</strong> would have slightly higher
+            performance on web agent and complex QA tasks. We then test <strong>Lumos</strong> on an unseen complex interactive task, WebShop. We observe that <strong>Lumos</strong> can bring an improvement over domain-specific 
+            agents 5-10 reward improvement, and also better performance than larger agents with 13B and 30B sizes.
+          </p>
+          <img src="static/images/lumos_results_4.png" class="center">
+          <p>
+            We also conduct deeper analysis about annotation quality and the choice of annotation formats. We answer the following questions: Q1: How good is our converted training annotations? 
+            Q2: Would it be better if we adopt low-level subgoals instead of our proposed high-level subgoals? 
+            <br>
+            We find that by controling the training annotation size to be the same, our annotations can still help get better performance than the ones produced by Self-Instruct method and passed by rigorous 
+            execution sanity checking. Also, we find that making planning module generate high-level subgoals would be a superior choice to generating a very long sequence of low-level subgoals.
           </p>
         </div>
       </div>
@@ -363,65 +416,12 @@
     <!--/ Results. -->
 
 </section>
-  
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Results. -->
-    <div class="columns is-centered">
-      <div class="column has-text-centered">
-        <h2 class="title is-3">Analysis</h2>
-        <div class="content has-text-justified">
-          <p align="center">
-           <img src="static/images/cost.png" width="400" class="center">
-          </p>
-          <p>
-            We calculate the cost of generating all the Dynosaur instructions and a subset for Super-NI fine-tuning. Dynosaur can bring better performance with much less generation cost.
-          </p>
-          <p align="center">
-           <img src="static/images/validity.png" width="400" class="center"> <!-- To .gif format-->
-          </p>
-          <p>
-            We also recruit human annotators to evaluate (instruction, input, output) pairs. We find that our method is found to be completely correct in 79% of instances, a substantial improvement over the 54% reported in Self-Instruct.
-          </p>
-          <p align="center">
-             <img src="static/images/continual_learning.png" class="center"> <!-- To .gif format-->
-          </p>
-          <p>
-            As Dynosaur can expand over time as new tasks come in, an important question is how to adapt a trained instruction-following model to new tasks without suffering from catastrophic forgetting.
-          </p>
-          <p>
-            Experiments on Super-NI show that replaying is an effective method to improve generalization ability and mitigate forgetting issues. For instruction tuning, we further design to select replay tasks based on instruction representations. 
-            Results show that selecting the most diverse instruction representations can be better than selecting based on data representation diversity.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-    <!--/ Results. -->
-
-</section>
-
-  
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>
-    @article{yin2023dynosaur,
-      title={Dynosaur: A Dynamic Growth Paradigm for Instruction-Tuning Data Curation},
-      author={Yin, Da and Liu, Xiao and Yin, Fan and Zhong, Ming and Bansal, Hritik and Han, Jiawei and Chang, Kai-Wei},
-      year={2023}
-    }
-    </code></pre>
-  </div>
-</section>
-
 
 <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
       <a class="icon-link"
-         href="https://allenai.github.io/lumos">
+         href="">
         <i class="fas fa-file-pdf"></i>
       </a>
       <a class="icon-link" href="https://github.com/allenai/lumos" class="external-link" disabled>
