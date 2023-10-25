@@ -92,7 +92,7 @@
       <div class="columns is-centered">
         <div class="column has-text-centered">
           <h1 class="title is-2 publication-title">🪄 Lumos: Language Agents with Unified Formats, Modular Design, and Open-Source LLMs</h1>
-          <div class="is-size-6 publication-authors">
+          <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://wadeyin9712.github.io/">Da Yin</a><sup>1</sup>,</span>
             <span class="author-block">
@@ -103,19 +103,20 @@
             <span class="author-block">
               <a href="https://www.cs.cmu.edu/~kchandu/">Khyathi Chandu</a><sup>2</sup>,
             </span>
+            <br>
             <span class="author-block">
               <a href="http://web.cs.ucla.edu/~kwchang/">Kai-Wei Chang</a><sup>1</sup>,
             </span>
             <span class="author-block">
-              <a href="https://homes.cs.washington.edu/~yejin/">Yejin Choi</a><sup>1</sup>,
+              <a href="https://homes.cs.washington.edu/~yejin/">Yejin Choi</a><sup>2</sup>,
             </span>
             <span class="author-block">
-              <a href="https://yuchenlin.xyz/">Bill Yuchen Lin</a><sup>1</sup>
+              <a href="https://yuchenlin.xyz/">Bill Yuchen Lin</a><sup>2</sup>
             </span>
           </div>
 
-          <div class="is-size-6 publication-authors">
-            <span class="author-block"><sup>1</sup>UCLA,</span>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of California, Los Angeles,</span>
             <span class="author-block"><sup>2</sup>AI2</span>
           </div>
 
@@ -277,7 +278,7 @@
               <br>&nbsp &nbsp - <strong>Lumos</strong> is trained with ~40K high-quality annotations from ground-truth reasoning steps in existing benchmarks with GPT-4.
             </li>
             <li><strong>🚀 Competitive Performance</strong>
-              <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> outperforms GPT-4/3.5-based agents on complex QA and web agent tasks, and larger open agents on maths tasks.
+              <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> beats GPT-4/3.5-based agents on complex QA/web agent tasks, and larger open agents on maths tasks.
               <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> performs better than open agent baseline formulations including chain-of-thoughts and unmodularized training.
               <br>&nbsp &nbsp - 🚀 <strong>Lumos</strong> surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
             </li>
@@ -321,7 +322,7 @@
     <div class="columns is-centered">
       <div class="column has-text-centered">
         <h2 class="title is-3">🪄 Lumos Architecture</h2>
-        <img src="static/images/lumos_architecture.png" width="100%" align="middle" class="center"/>
+        <img src="static/images/lumos_architecture.png" width="600" align="middle" class="center"/>
         <div class="content has-text-justified">
           <strong>Lumos</strong> consists of following modules: 
           <ul>
@@ -345,6 +346,7 @@
       <div class="column has-text-centered">
         <h2 class="title is-3">🪄 Lumos Formulation</h2>
         <img src="static/images/lumos_formulation.png" class="center">
+        <br>
         <div class="content has-text-justified">
           We attempt the following two <strong>Lumos</strong> formulations: 
           <ul>
@@ -385,27 +387,44 @@
         <h2 class="title is-3">Results</h2>
         <div class="content has-text-justified">
         <img src="static/images/lumos_results_1.png" class="center">
+        <br>
           <p>
-            We first evaluate <strong>Lumos</strong> on complex QA, web agent and maths tasks. We find that <strong>Lumos</strong> outperforms GPT-4/3.5-based agents on complex QA and web agent tasks.
+            We first evaluate <strong>Lumos</strong> on complex QA, web agent and maths tasks. 
+          </p>
+          <p>
+            We find that <strong>Lumos</strong> outperforms GPT-4/3.5-based agents on complex QA and web agent tasks.
             In particular, <strong>Lumos</strong> outperforms GPT-4 5.1 step success rate on Mind2Web and GPT-3.5-turbo-based ReAct 5.1 LLM accuracy. <strong>Lumos</strong> also achieves better performance than 2-4x bigger language agents on maths tasks.
           </p>
           <br>
+          <p align="center">
           <img src="static/images/lumos_results_2.png" class="center">
+          </p>
           <p>
             We compare <strong>Lumos</strong> formulation with other baseline formulations to train open-source agents. The baseline formulations are Vanilla Training (Van-T), Chain-of-Thought Training (CoT-T), 
-            and Unmodularized Agent Training (UA-T). <strong>Lumos</strong> performs the best among the baselines on three different complex interative tasks.
+            and Unmodularized Agent Training (UA-T). 
           </p>
-          <img src="static/images/lumos_results_3.png" width="400" class="center">
           <p>
-            We first evaluate <strong>Lumos</strong> trained with the unified annotations composed by task-specific ones. We find that after the unified training, <strong>Lumos</strong> would have slightly higher
-            performance on web agent and complex QA tasks. We then test <strong>Lumos</strong> on an unseen complex interactive task, WebShop. We observe that <strong>Lumos</strong> can bring an improvement over domain-specific 
+            <strong>Lumos</strong> performs the best among the baselines on three different complex interative tasks.
+          </p>
+          <p align="center">
+          <img src="static/images/lumos_results_3.png" width="400" class="center">
+          </p>
+          <p>
+            We first evaluate <strong>Lumos</strong> trained with the unified annotations composed by task-specific ones. We then test <strong>Lumos</strong> on an unseen complex interactive task, WebShop.
+          </p>
+          <p>
+            We find that after the unified training, <strong>Lumos</strong> would have slightly higher
+            performance on web agent and complex QA tasks. We also observe that <strong>Lumos</strong> can bring an improvement over domain-specific 
             agents 5-10 reward improvement, and also better performance than larger agents with 13B and 30B sizes.
           </p>
-          <img src="static/images/lumos_results_4.png" width="400" class="center">
+          <p align="center">
+          <img src="static/images/lumos_results_4.png" width="600" class="center">
+          </p>
           <p>
             We also conduct deeper analysis about annotation quality and the choice of annotation formats. We answer the following questions: Q1: How good is our converted training annotations? 
             Q2: Would it be better if we adopt low-level subgoals instead of our proposed high-level subgoals? 
-            <br>
+          </p>
+          <p>
             We find that by controling the training annotation size to be the same, our annotations can still help get better performance than the ones produced by Self-Instruct method and passed by rigorous 
             execution sanity checking. Also, we find that making planning module generate high-level subgoals would be a superior choice to generating a very long sequence of low-level subgoals.
           </p>
