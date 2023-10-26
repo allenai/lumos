@@ -19,7 +19,7 @@ accelerate launch \
     --use_flash_attn \
     --tokenizer_name /net/nfs/mosaic/day/llama_hf/llama-2-${MODEL_SIZE} \
     --use_slow_tokenizer \
-    --train_file data/train/${TASK}/train_annots/${TASK}_plan_onetime.jsonl \
+    --train_file data/train/${TASK}/train_annots/lumos_${TASK}_plan_onetime.jsonl \
     --max_seq_length 1024 \
     --preprocessing_num_workers 16 \
     --per_device_train_batch_size $BATCH_SIZE_PER_GPU \
@@ -29,7 +29,7 @@ accelerate launch \
     --warmup_ratio 0.03 \
     --weight_decay 0. \
     --num_train_epochs 2 \
-    --output_dir /net/nfs/mosaic/day/uniagent/train/output/${TASK}_plan_onetime_llama-2-${MODEL_SIZE}/ \
+    --output_dir /net/nfs/mosaic/day/uniagent/train/output/lumos_${TASK}_plan_onetime/ \
     --with_tracking \
     --report_to tensorboard \
     --logging_steps 1
