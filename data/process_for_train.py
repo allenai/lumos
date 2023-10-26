@@ -175,9 +175,9 @@ def collect_plan_data(args):
         os.mkdir(f"data/train/{args.domain}/train_annots")
 
     if "iterative" in args.formulation:
-        output_fn = f"data/train/{args.domain}/train_annots/{args.domain}_plan.jsonl"
+        output_fn = f"data/train/{args.domain}/train_annots/lumos_{args.domain}_plan_iterative.jsonl"
     else:
-        output_fn = f"data/train/{args.domain}/train_annots/{args.domain}_plan_onetime.jsonl"
+        output_fn = f"data/train/{args.domain}/train_annots/lumos_{args.domain}_plan_onetime.jsonl"
 
     all_messages = list()
     for i, d in enumerate(data):
@@ -264,9 +264,9 @@ def collect_ground_data(args):
         os.mkdir(f"data/train/{args.domain}/train_annots")
 
     if "iterative" in args.formulation:
-        output_fn = f"data/train/{args.domain}/train_annots/{args.domain}_ground.jsonl"
+        output_fn = f"data/train/{args.domain}/train_annots/lumos_{args.domain}_ground_iterative.jsonl"
     else:
-        output_fn = f"data/train/{args.domain}/train_annots/{args.domain}_ground_onetime.jsonl"
+        output_fn = f"data/train/{args.domain}/train_annots/lumos_{args.domain}_ground_onetime.jsonl"
 
     all_messages = list()
     for i, d in enumerate(data):
@@ -372,11 +372,11 @@ def collect_unified_data(domains):
     unified_data = {"plan": list(), "ground": list()}
     for domain in domains:
         for module in ["plan", "ground"]:
-            with open(f"data/train/{domain}/train_annots/{domain}_{module}.jsonl", "r") as f:
+            with open(f"data/train/{domain}/train_annots/lumos_{domain}_{module}_iterative.jsonl", "r") as f:
                 unified_data[module] += [json.loads(d) for d in f]
 
     for module in ["plan", "ground"]:
-        with open(f"data/train/unified/train_annots/unified_{module}.jsonl", "w") as f:
+        with open(f"data/train/unified/train_annots/lumos_unified_{module}_iterative.jsonl", "w") as f:
             for d in unified_data[module]:
                 f.write(json.dumps(d)+'\n')
 
