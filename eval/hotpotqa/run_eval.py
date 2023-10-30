@@ -248,9 +248,9 @@ def lumos_iterative(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i % 2 == 0:
-                model_name_or_path = os.path.join(args.model_name_or_path, "complex_qa_plan_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_complex_qa_plan_iterative")
             else:
-                model_name_or_path = os.path.join(args.model_name_or_path, "complex_qa_ground_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_complex_qa_ground_iterative")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
@@ -371,9 +371,9 @@ def lumos_onetime(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i == 0:
-                model_name_or_path = os.path.join(args.model_name_or_path, "complex_qa_plan_onetime_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_complex_qa_plan_onetime")
             else:
-                model_name_or_path = os.path.join(args.model_name_or_path, "complex_qa_ground_onetime_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_complex_qa_ground_onetime")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
@@ -470,12 +470,11 @@ def cot(args):
 
     if args.model_name_or_path:
         print("Loading model and tokenizer...")
-        model_name_or_path = os.path.join(args.model_name_or_path, f"complex_qa_cot_llama-2-7b")
-        tokenizer_name_or_path = os.path.join(f"{args.tokenizer_name_or_path}", f"complex_qa_cot_llama-2-7b")
+        model_name_or_path = os.path.join(args.model_name_or_path, "complex_qa_cot")
         
         model, tokenizer = load_hf_lm_and_tokenizer(
             model_name_or_path=model_name_or_path, 
-            tokenizer_name_or_path=tokenizer_name_or_path, 
+            tokenizer_name_or_path=model_name_or_path, 
             load_in_8bit=args.load_in_8bit, 
             load_in_half=True,
             gptq_model=args.gptq
@@ -541,12 +540,11 @@ def direct(args):
 
     if args.model_name_or_path:
         print("Loading model and tokenizer...")
-        model_name_or_path = os.path.join(args.model_name_or_path, f"complex_qa_direct_llama-2-7b")
-        tokenizer_name_or_path = os.path.join(f"{args.tokenizer_name_or_path}", f"complex_qa_direct_llama-2-7b")
+        model_name_or_path = os.path.join(args.model_name_or_path, "complex_qa_direct")
         
         model, tokenizer = load_hf_lm_and_tokenizer(
             model_name_or_path=model_name_or_path, 
-            tokenizer_name_or_path=tokenizer_name_or_path, 
+            tokenizer_name_or_path=model_name_or_path, 
             load_in_8bit=args.load_in_8bit, 
             load_in_half=True,
             gptq_model=args.gptq
