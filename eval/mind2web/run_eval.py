@@ -144,7 +144,7 @@ def lumos_iterative(args):
 
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
-            model_name_or_path = os.path.join(args.model_name_or_path, "web_agent_plan_llama-2-7b")
+            model_name_or_path = os.path.join(args.model_name_or_path, "lumos_web_agent_plan_iterative")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
@@ -173,7 +173,7 @@ def lumos_iterative(args):
 
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
-            model_name_or_path = os.path.join(args.model_name_or_path, "web_agent_ground_llama-2-7b")
+            model_name_or_path = os.path.join(args.model_name_or_path, "lumos_web_agent_ground_iterative")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
