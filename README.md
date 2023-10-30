@@ -1,15 +1,15 @@
 # 🪄 Lumos: Language Agents with Unified Formats, Modular Design, and Open-Source LLMs
 <p align="center">
-  <a href="">
+  <a href="https://allenai.github.io/lumos/">
     <img src="https://img.shields.io/badge/🌐-Website-red">
   </a>
   <a href="">
     <img src="https://img.shields.io/badge/📝-Paper-blue">
   </a>
-  <a href="">
+  <a href="https://huggingface.co/datasets?sort=trending&search=ai2lumos">
     <img src="https://img.shields.io/badge/🤗-Data-orange">
   </a>
-  <a href="">
+  <a href="https://huggingface.co/models?sort=trending&search=ai2lumos">
     <img src="https://img.shields.io/badge/🤗-Model-green">
   </a> 
 </p>
