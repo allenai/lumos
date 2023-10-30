@@ -16,7 +16,7 @@
 
 We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular** Design, and **Open-Source** LLMs. **Lumos** unifies a suite of complex interactive tasks and achieves competitive performance with GPT-4/3.5-based and larger open-source agents. 
 
-**Lumos** has following features:
+‼️ **Lumos** has following features:
 * 🧩 **Modular Architecture**:
   - **Lumos** consists of planning, grounding, and execution modules built based on LLAMA-2-7B.
 * 🌍 **Diverse Training Data**:
@@ -26,7 +26,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular*
   - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **unmodularized** training.
   - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
  
-### Citation
+## 🤩 Citation
 
 If you find this work is relevant with your research, please feel free to cite our work!
 ```
@@ -48,7 +48,7 @@ If you find this work is relevant with your research, please feel free to cite o
 <img src=assets/lumos.png width=800/>
 </p>
 
-## Setup
+## 🛠️ Setup
 ```
 ./setup.sh
 ```
@@ -90,7 +90,7 @@ We also provide the fine-tuned planning and grounding module checkpoints in 🤗
 | lumos_maths_onetime         |  [Planning](https://huggingface.co/ai2lumos/lumos_maths_plan_onetime), [Grounding](https://huggingface.co/ai2lumos/lumos_maths_ground_onetime)    |
 | lumos_unified_iterative     |  [Planning](https://huggingface.co/ai2lumos/lumos_unified_plan_iterative), [Grounding](https://huggingface.co/ai2lumos/lumos_unified_ground_iterative)    |
 
-## Evaluation
+## ✅ Evaluation
 Evaluation scripts for different datasets are under [`scripts/eval`](./scripts/eval). For example, you can evaluate Lumos on HotpotQA by running:
 ```
 ./hotpotqa.sh
@@ -110,5 +110,5 @@ python -m data.prompt_convertion \
 ```
 `domain` covers maths, complex QA and web agent. `data_fn` is the path where raw benchmarks are stored.
 
-## Acknowledgement
+## ❤️ Acknowledgement
 We greatly thank Tulu team for providing awesome [code](https://github.com/allenai/open-instruct) to finetune LLAMA-2. We also sincerely appreciate the contributors of [zeno-build](https://github.com/zeno-ml/zeno-build), [Mind2Web](https://github.com/OSU-NLP-Group/Mind2Web), and [WebShop](https://github.com/princeton-nlp/WebShop) for providing fast GPT prompting, HTML preprocessing and evaluation docker environment.
