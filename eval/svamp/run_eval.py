@@ -108,9 +108,9 @@ def lumos_iterative(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i % 2 == 0:
-                model_name_or_path = os.path.join(args.model_name_or_path, "maths_plan_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_maths_plan_iterative")
             else:
-                model_name_or_path = os.path.join(args.model_name_or_path, "maths_ground_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_maths_ground_iterative")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
@@ -236,9 +236,9 @@ def lumos_onetime(args):
         if args.model_name_or_path:
             print("Loading model and tokenizer...")
             if i == 0:
-                model_name_or_path = os.path.join(args.model_name_or_path, "maths_plan_onetime_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_maths_plan_onetime")
             else:
-                model_name_or_path = os.path.join(args.model_name_or_path, "maths_ground_onetime_llama-2-7b")
+                model_name_or_path = os.path.join(args.model_name_or_path, "lumos_maths_ground_onetime")
             
             model, tokenizer = load_hf_lm_and_tokenizer(
                 model_name_or_path=model_name_or_path, 
@@ -336,7 +336,7 @@ def cot(args):
 
     if args.model_name_or_path:
         print("Loading model and tokenizer...")
-        model_name_or_path = os.path.join(args.model_name_or_path, f"maths_cot_llama-2-7b")
+        model_name_or_path = os.path.join(args.model_name_or_path, "maths_cot")
         
         model, tokenizer = load_hf_lm_and_tokenizer(
             model_name_or_path=model_name_or_path, 
@@ -392,7 +392,7 @@ def direct(args):
 
     if args.model_name_or_path:
         print("Loading model and tokenizer...")
-        model_name_or_path = os.path.join(args.model_name_or_path, "maths_direct_llama-2-7b")
+        model_name_or_path = os.path.join(args.model_name_or_path, "maths_direct")
         
         model, tokenizer = load_hf_lm_and_tokenizer(
             model_name_or_path=model_name_or_path, 
