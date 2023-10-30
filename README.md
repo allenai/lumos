@@ -109,3 +109,6 @@ python -m data.prompt_convertion \
   --convert_all
 ```
 `domain` covers maths, complex QA and web agent. `data_fn` is the path where raw benchmarks are stored.
+
+## Acknowledgement
+We greatly thank Tulu team for providing awesome [code](https://github.com/allenai/open-instruct) to finetune LLAMA-2. We also sincerely appreciate the contributors of [zeno-build](https://github.com/zeno-ml/zeno-build), [Mind2Web](https://github.com/OSU-NLP-Group/Mind2Web), and [WebShop](https://github.com/princeton-nlp/WebShop) for providing fast GPT prompting, HTML preprocessing and evaluation docker environment.
