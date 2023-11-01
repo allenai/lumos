@@ -1,14 +1,12 @@
 """From https://github.com/allenai/open-instruct/blob/main/open_instruct/finetune.py."""
 
-#!/usr/bin/env python
-# coding=utf-8
-
 import argparse
 import logging
 import math
 import os
 import random
 import datasets
+from datasets import load_dataset,Features,Value
 import torch
 from functools import partial
 from accelerate import Accelerator
@@ -30,12 +28,12 @@ from transformers import (
     get_scheduler,
     GPTNeoXTokenizerFast,
     GPT2Tokenizer,
-    OPTForCausalLM
+    OPTForCausalLM,
+    BitsAndBytesConfig,
 )
-from peft import LoraConfig, TaskType, get_peft_model
+from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_kbit_training
 
 logger = get_logger(__name__)
-os.environ["WANDB_DISABLED"] = "true"
 
 
 def parse_args():
@@ -89,11 +87,6 @@ def parse_args():
         type=float,
         default=0.1,
         help="The dropout rate of lora modules.",
-    )
-    parser.add_argument(
-        "--save_merged_lora_model",
-        action="store_true",
-        help="If passed, will merge the lora modules and save the entire model.",
     )
     parser.add_argument(
         "--use_flash_attn",
@@ -205,6 +198,31 @@ def parse_args():
             "If passed, LLM loading time and RAM consumption will be benefited."
         ),
     )
+    parser.add_argument(
+        "--gradient_checkpointing",
+        action="store_true",
+        help=(
+            "Turn on gradient checkpointing. Saves memory but slows training."
+        ),
+    )
+    parser.add_argument(
+        "--use_qlora",
+        action="store_true",
+        help=(
+            "Use qLoRA training - main thing is initialising model in quantised form. Not compatible with deepspeed."
+        ),
+    )
+    parser.add_argument(
+        '--clip_grad_norm',
+        type=float,
+        default=-1,
+        help='Clip gradient norm. Not compatible with deepspeed (use deepspeed config instead).',
+    )
+    parser.add_argument(
+        '--use_8bit_optimizer',
+        action='store_true',
+        help='Use 8bit optimizer from bitsandbytes. Not compatible with deepspeed (use deepspeed config instead).',
+    )
     args = parser.parse_args()
 
     # Sanity checks
@@ -303,69 +321,26 @@ def encode_with_messages_format(example, tokenizer, max_seq_length):
     }
 
 
-def encode_with_messages_format_chat(example, tokenizer, max_seq_length):
-    '''
-    Here we assume each example has a 'messages' field Each message is a dict with 'role' and 'content' fields.
-    We concatenate all messages with the roles as delimiters and tokenize them together.
-    '''
-    messages = example['messages']
-    if len(messages) == 0:
-        raise ValueError('messages field is empty.')
-    
-    def _concat_messages(messages):
-        message_text = ""
-        for i, message in enumerate(messages):
-            if message["role"] == "system":
-                message_text += tokenizer.bos_token + "[INST] <<SYS>>\n" + message["content"].strip() + "<</SYS>>\n\n"
-            elif message["role"] == "user":
-                message_text += tokenizer.bos_token + "[INST] " + message["content"].strip() + " [/INST]\n"
-            elif message["role"] == "assistant":
-                message_text += message["content"].strip() + tokenizer.eos_token + "\n"
-            else:
-                raise ValueError("Invalid role: {}".format(message["role"]))
-        return message_text
-        
-    example_text = _concat_messages(messages).strip()
-    tokenized_example = tokenizer(example_text, return_tensors='pt', max_length=max_seq_length, truncation=True)
-    input_ids = tokenized_example.input_ids
-    labels = input_ids.clone()
-
-    # mask the non-assistant part for avoiding loss
-    for message_idx, message in enumerate(messages):
-        if message["role"] != "assistant":
-            if message_idx == 0:
-                message_start_idx = 0
-            else:
-                message_start_idx = tokenizer(
-                    _concat_messages(messages[:message_idx]), return_tensors='pt', max_length=max_seq_length, truncation=True
-                ).input_ids.shape[1]
-            messages_so_far = _concat_messages(messages[:message_idx+1])
-            message_end_idx = tokenizer(
-                messages_so_far,
-                return_tensors='pt', 
-                max_length=max_seq_length, 
-                truncation=True
-            ).input_ids.shape[1]
-            labels[:, message_start_idx:message_end_idx] = -100
-            
-            if message_end_idx >= max_seq_length:
-                break
-
-    attention_mask = torch.ones_like(input_ids)
-    return {
-        'input_ids': input_ids.flatten(),
-        'labels': labels.flatten(),
-        'attention_mask': attention_mask.flatten(),
-    }
+def save_with_accelerate(accelerator, model, tokenizer, output_dir, args):
+    unwrapped_model = accelerator.unwrap_model(model)
+    # When doing multi-gpu training, we need to use accelerator.get_state_dict(model) to get the state_dict.
+    # Otherwise, sometimes the model will be saved with only part of the parameters.
+    # Also, accelerator needs to use the wrapped model to get the state_dict.
+    state_dict = accelerator.get_state_dict(model)
+    if args.use_lora:
+        # When using lora, the unwrapped model is a PeftModel, which doesn't support the is_main_process 
+        # and has its own save_pretrained function for only saving lora modules.
+        # We have to manually specify the is_main_process outside the save_pretrained function.
+        if accelerator.is_main_process:
+            unwrapped_model.save_pretrained(output_dir, state_dict=state_dict)
+    else:
+        unwrapped_model.save_pretrained(
+            output_dir, is_main_process=accelerator.is_main_process, save_function=accelerator.save, state_dict=state_dict
+        )
         
 
 def main():
     args = parse_args()
-
-    # A hacky way to make llama work with flash attention
-    if args.use_flash_attn:
-        from llama_flash_attn_monkey_patch import replace_llama_attn_with_flash_attn
-        replace_llama_attn_with_flash_attn()
 
     # Initialize the accelerator. We will let the accelerator handle device placement for us in this example.
     # If we're using tracking, we also need to initialize it here and it will by default pick up all supported trackers
@@ -377,7 +352,6 @@ def main():
         accelerator_log_kwargs["project_dir"] = args.output_dir
 
     accelerator = Accelerator(gradient_accumulation_steps=args.gradient_accumulation_steps, **accelerator_log_kwargs)
-
     # Make one log on every process with the configuration for debugging.
     logging.basicConfig(
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -440,12 +414,33 @@ def main():
         )
 
     if args.model_name_or_path:
-        model = AutoModelForCausalLM.from_pretrained(
-            args.model_name_or_path,
-            from_tf=bool(".ckpt" in args.model_name_or_path),
-            config=config,
-            low_cpu_mem_usage=args.low_cpu_mem_usage,
-        )
+        if args.use_qlora:
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.bfloat16,
+            )
+            device_index = accelerator.local_process_index
+            device_map = {"": device_index} # force data-parallel training.
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path,
+                from_tf=bool(".ckpt" in args.model_name_or_path),
+                config=config,
+                load_in_4bit=True,
+                quantization_config=bnb_config,
+                device_map=device_map,
+                torch_dtype=torch.bfloat16,
+                use_flash_attention_2=True if args.use_flash_attn else False,
+            )
+        else:
+            model = AutoModelForCausalLM.from_pretrained(
+                args.model_name_or_path,
+                from_tf=bool(".ckpt" in args.model_name_or_path),
+                config=config,
+                low_cpu_mem_usage=args.low_cpu_mem_usage,
+                use_flash_attention_2=True if args.use_flash_attn else False,
+            )
     else:
         logger.info("Training new model from scratch")
         model = AutoModelForCausalLM.from_config(config)
@@ -475,14 +470,20 @@ def main():
     if len(tokenizer) > embedding_size:
         model.resize_token_embeddings(len(tokenizer))
 
+    if args.seed is not None:
+        set_seed(args.seed)
+
     if args.use_lora:
+        if args.use_qlora:
+            model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=args.gradient_checkpointing)
         logger.info("Initializing LORA model...")
         peft_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM, 
             inference_mode=False, 
             r=args.lora_rank, 
             lora_alpha=args.lora_alpha, 
-            lora_dropout=args.lora_dropout
+            lora_dropout=args.lora_dropout,
+            target_modules=["q_proj", "o_proj", "v_proj", "k_proj", "gate_proj", "up_proj", "down_proj"]
         )
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
@@ -495,18 +496,11 @@ def main():
             max_seq_length=args.max_seq_length,
         )
     elif "messages" in raw_datasets["train"].column_names:
-        if "chat" not in args.model_name_or_path:
-            encode_function = partial(
-                encode_with_messages_format,
-                tokenizer=tokenizer,
-                max_seq_length=args.max_seq_length,
-            )
-        else:
-            encode_function = partial(
-                encode_with_messages_format_chat,
-                tokenizer=tokenizer,
-                max_seq_length=args.max_seq_length,
-            )
+        encode_function = partial(
+            encode_with_messages_format,
+            tokenizer=tokenizer,
+            max_seq_length=args.max_seq_length,
+        )
     else:
         raise ValueError("You need to have either 'prompt'&'completion' or 'messages' in your column names.")
     
@@ -541,15 +535,24 @@ def main():
     no_decay = ["bias", "layer_norm.weight"]
     optimizer_grouped_parameters = [
         {
-            "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+            "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay) and p.requires_grad],
             "weight_decay": args.weight_decay,
         },
         {
-            "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
+            "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay) and p.requires_grad],
             "weight_decay": 0.0,
         },
     ]
-    optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=args.learning_rate)
+    if args.use_qlora:
+        from bitsandbytes.optim import AdamW
+        optimizer = AdamW(
+            optimizer_grouped_parameters,
+            lr=args.learning_rate,
+            optim_bits=8 if args.use_8bit_optimizer else 32,
+            is_paged=True
+        )
+    else:
+        optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=args.learning_rate)
 
     # Scheduler and math around the number of training steps.
     overrode_max_train_steps = False
@@ -616,57 +619,72 @@ def main():
     # Potentially load in the weights and states from a previous save
     if args.resume_from_checkpoint:
         if args.resume_from_checkpoint is not None or args.resume_from_checkpoint != "":
-            accelerator.print(f"Resumed from checkpoint: {args.resume_from_checkpoint}")
-            accelerator.load_state(args.resume_from_checkpoint)
+            checkpoint_path = args.resume_from_checkpoint
             path = os.path.basename(args.resume_from_checkpoint)
         else:
             # Get the most recent checkpoint
             dirs = [f.name for f in os.scandir(os.getcwd()) if f.is_dir()]
             dirs.sort(key=os.path.getctime)
-            path = dirs[-1]  # Sorts folders by date modified, most recent checkpoint is the last
+            path = dirs[
+                -1
+            ]  # Sorts folders by date modified, most recent checkpoint is the last
+            checkpoint_path = path
+            path = os.path.basename(checkpoint_path)
+
+        accelerator.print(f"Resumed from checkpoint: {checkpoint_path}")
+        accelerator.load_state(path)
         # Extract `epoch_{i}` or `step_{i}`
         training_difference = os.path.splitext(path)[0]
 
         if "epoch" in training_difference:
             starting_epoch = int(training_difference.replace("epoch_", "")) + 1
             resume_step = None
+            completed_steps = starting_epoch * num_update_steps_per_epoch
         else:
             # need to multiply `gradient_accumulation_steps` to reflect real steps
-            resume_step = int(training_difference.replace("step_", "")) * args.gradient_accumulation_steps
+            resume_step = (
+                int(training_difference.replace("step_", ""))
+                * args.gradient_accumulation_steps
+            )
             starting_epoch = resume_step // len(train_dataloader)
+            completed_steps = resume_step // args.gradient_accumulation_steps
             resume_step -= starting_epoch * len(train_dataloader)
 
     # update the progress_bar if load from checkpoint
-    progress_bar.update(starting_epoch * num_update_steps_per_epoch)
-    completed_steps = starting_epoch * num_update_steps_per_epoch
+    progress_bar.update(completed_steps)
 
     for epoch in range(starting_epoch, args.num_train_epochs):
         model.train()
         total_loss = 0
-        for step, batch in enumerate(train_dataloader):
-            # We need to skip steps until we reach the resumed step
-            if args.resume_from_checkpoint and epoch == starting_epoch:
-                if resume_step is not None and completed_steps < resume_step:
-                    if step % args.gradient_accumulation_steps == 0:
-                        progress_bar.update(1)
-                        completed_steps += 1
-                    continue
-
+        if (
+            args.resume_from_checkpoint
+            and epoch == starting_epoch
+            and resume_step is not None
+        ):
+            # We skip the first `n` batches in the dataloader when resuming from a checkpoint
+            active_dataloader = accelerator.skip_first_batches(
+                train_dataloader, resume_step
+            )
+        else:
+            active_dataloader = train_dataloader
+        for step, batch in enumerate(active_dataloader):
             with accelerator.accumulate(model):
-                outputs = model(**batch, use_cache=False)
+                outputs = model(**batch, use_cache=False)                
                 loss = outputs.loss
                 # We keep track of the loss at each logged step
                 total_loss += loss.detach().float()
                 accelerator.backward(loss)
+                # clip gradient norm. don't do this with deepspeed
+                if accelerator.sync_gradients and args.clip_grad_norm > 0:
+                    accelerator.clip_grad_norm_(model.parameters(), args.clip_grad_norm)
                 optimizer.step()
                 optimizer.zero_grad()
                 lr_scheduler.step()       
 
-            # # Checks if the accelerator has performed an optimization step behind the scenes
+            # Checks if the accelerator has performed an optimization step behind the scenes
             if accelerator.sync_gradients:
                 progress_bar.update(1)
                 completed_steps += 1
-
                 if args.logging_steps and completed_steps % args.logging_steps == 0:
                     avg_loss = accelerator.gather(total_loss).mean().item() / args.gradient_accumulation_steps / args.logging_steps
                     logger.info(f"  Step: {completed_steps}, LR: {lr_scheduler.get_last_lr()[0]}, Loss: {avg_loss}")
@@ -685,7 +703,8 @@ def main():
                         output_dir = f"step_{completed_steps}"
                         if args.output_dir is not None:
                             output_dir = os.path.join(args.output_dir, output_dir)
-                        accelerator.save_state(output_dir)
+                        save_with_accelerate(accelerator, model, tokenizer, output_dir, args)
+
                 if completed_steps >= args.max_train_steps:
                     break
 
@@ -693,7 +712,7 @@ def main():
             output_dir = f"epoch_{epoch}"
             if args.output_dir is not None:
                 output_dir = os.path.join(args.output_dir, output_dir)
-            accelerator.save_state(output_dir)
+            save_with_accelerate(accelerator, model, tokenizer, output_dir, args)
 
     if args.with_tracking:
         accelerator.end_training()
@@ -702,22 +721,7 @@ def main():
         accelerator.wait_for_everyone()
         if accelerator.is_main_process:
             tokenizer.save_pretrained(args.output_dir)
-        unwrapped_model = accelerator.unwrap_model(model)
-        # When doing multi-gpu training, we need to use accelerator.get_state_dict(model) to get the state_dict.
-        # Otherwise, sometimes the model will be saved with only part of the parameters.
-        # Also, accelerator needs to use the wrapped model to get the state_dict.
-        state_dict = accelerator.get_state_dict(model)
-        if args.use_lora:
-            # When using lora, the unwrapped model is a PeftModel, which doesn't support the is_main_process 
-            # and has its own save_pretrained function for only saving lora modules.
-            # We have to mannually specify the is_main_process outside the save_pretrained function.
-            if accelerator.is_main_process:
-                unwrapped_model.save_pretrained(args.output_dir, state_dict=state_dict)
-        else:
-            unwrapped_model.save_pretrained(
-                args.output_dir, is_main_process=accelerator.is_main_process, save_function=accelerator.save, state_dict=state_dict
-            )
-        
+        save_with_accelerate(accelerator, model, tokenizer, args.output_dir, args)
 
 
 if __name__ == "__main__":
