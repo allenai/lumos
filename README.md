@@ -1,4 +1,4 @@
-# 🪄 Lumos: Language Agents with Unified Formats, Modular Design, and Open-Source LLMs
+# 🪄 Lumos: Language Agents with Unified Data Formats, Modular Design, and Open-Source LLMs
 <p align="center">
   <a href="https://allenai.github.io/lumos/">
     <img src="https://img.shields.io/badge/🌐-Website-red">
@@ -14,7 +14,7 @@
   </a> 
 </p>
 
-We introduce 🪄**Lumos**, Language Agents with **Unified** Formats, **Modular** Design, and **Open-Source** LLMs. **Lumos** unifies a suite of complex interactive tasks and achieves competitive performance with GPT-4/3.5-based and larger open-source agents. 
+We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Modular** Design, and **Open-Source** LLMs. **Lumos** unifies a suite of complex interactive tasks and achieves competitive performance with GPT-4/3.5-based and larger open-source agents. 
 
 ‼️ **Lumos** has following features:
 * 🧩 **Modular Architecture**:
@@ -38,7 +38,7 @@ If you find this work is relevant with your research, please feel free to cite o
 ```
 
 ## 🔥 News
-- **[2023, Oct ]** We release the important items for training and evaluating **Lumos**:
+- **[2023, Nov 8]** We release the important items for training and evaluating **Lumos**:
   - 💻 **Lumos** code for annotation generation, training and evaluation
   - 🤗 **Lumos** checkpoints with 7B model size
   - 🤗 **Lumos** training annotations and their raw data
