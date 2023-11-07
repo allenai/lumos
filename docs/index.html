@@ -201,9 +201,11 @@
               <br>&nbsp &nbsp - <strong>Lumos</strong> is trained with ~40K diverse annotations from ground-truth reasoning steps in existing benchmarks with GPT-4.
             </li>
             <li><strong>🚀 Competitive Performance</strong>
+              <ul>
               <li> 🚀 <strong>Lumos</strong> beats GPT-4/3.5-based agents on complex QA/web tasks, and larger open agents on maths tasks. </li>
               <li> 🚀 <strong>Lumos</strong> performs better than open agent baseline formulations including chain-of-thoughts and unmodularized training. </li>
               <li> 🚀 <strong>Lumos</strong> surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop. </li>
+              </ul>
             </li>
           </ul>
          </div>
@@ -250,11 +252,17 @@
           <strong>Lumos</strong> consists of following modules: 
           <ul>
             <li><strong>Planning Module:</strong>
-              <br>&nbsp &nbsp - Decompose a complex task into a series of high-level subgoals, which are written in natural language.</li> 
+              <ul>
+                <li>Decompose a complex task into a series of high-level subgoals, which are written in natural language.</li>
+              </ul>
             <li><strong>Grounding Module:</strong>
-              <br>&nbsp &nbsp &nbsp &nbsp - Convert the high-level subgoals produced by the planning module to low-level executable actions.</li>
+              <ul>
+                <li>Convert the high-level subgoals produced by the planning module to low-level executable actions.</li>
+              </ul>
             <li><strong>Execution Module:</strong>
-              <br>&nbsp &nbsp - Parse actions to a series of external tools including APIs, small neural models, and virtual simulators that interact with relevant tools and external environment.</li>
+              <ul>
+                <li>Parse actions to a series of external tools including APIs, small neural models, and virtual simulators that interact with relevant tools and external environment.</li>
+              </ul>
           </ul>
         </div>
       </div>
@@ -274,10 +282,14 @@
           We attempt the following two <strong>Lumos</strong> formulations: 
           <ul>
             <li><strong>Lumos-Iterative (Lumos-I):</strong>
-              <br>&nbsp &nbsp - Generates one subgoal and its corresponding executable actions in each iteration according to the external environment and prior memory. 
-              <br>&nbsp &nbsp - When generating the current t-th subgoal, the planning module requires the previous planned subgoals and the execution results of their grounded actions.</li>
+              <ul>
+              <li>Generates one subgoal and its corresponding executable actions in each iteration according to the external environment and prior memory.</li> 
+              <li>When generating the current t-th subgoal, the planning module requires the previous planned subgoals and the execution results of their grounded actions.</li>
+              </ul>
             <li><strong>Lumos-Onetime (Lumos-O):</strong>
-              <br>&nbsp &nbsp - An efficient formulation that generates all the subgoals and grounded actions at once.</li> 
+              <ul>
+              <li>An efficient formulation that generates all the subgoals and grounded actions at once.</li>
+              </ul>
           </ul>
         </div>
       </div>
