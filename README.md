@@ -93,7 +93,7 @@ We also provide the fine-tuned planning and grounding module checkpoints in 🤗
 ## ✅ Evaluation
 Evaluation scripts for different datasets are under [`scripts/eval`](./scripts/eval). For example, you can evaluate Lumos on HotpotQA by running:
 ```
-./hotpotqa.sh
+./scripts/eval/hotpotqa.sh
 ```
 
 ## Others
