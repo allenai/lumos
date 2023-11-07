@@ -22,7 +22,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Mod
 * 🌍 **Diverse Training Data**:
   - **Lumos** is trained with ~40K high-quality annotations from ground-truth reasoning steps in existing benchmarks with GPT-4. 
 * 🚀 **Competitive Performance**:
-  - 🚀 **Lumos** outperforms **GPT-4/3.5-based** agents on complex QA and web agent tasks, and **larger open agents** on maths tasks.
+  - 🚀 **Lumos** outperforms **GPT-4/3.5-based** agents on complex QA and web tasks, and **larger open agents** on maths tasks.
   - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **unmodularized** training.
   - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
  
@@ -31,7 +31,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Mod
 If you find this work is relevant with your research, please feel free to cite our work!
 ```
 @article{yin2023lumos,
-  title={Lumos: Towards Language Agents that are Unified, Modular, and Open Source},
+  title={Lumos: Language Agents with Unified Data Formats, Modular Design, and Open-Source LLMs},
   author={Yin, Da and Brahman, Faeze and Ravichander, Abhilasha and Chandu, Khyathi and Chang, Kai-Wei and Choi, Yejin and Lin, Bill Yuchen},
   year={2023}
 }
