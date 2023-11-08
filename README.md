@@ -1,4 +1,4 @@
-# 🪄 Lumos: Lumos: Learning Agents with Unified Data, Modular Design, and Open-Source LLMs
+# 🪄 Lumos: Learning Agents with Unified Data, Modular Design, and Open-Source LLMs
 <p align="center">
   <a href="https://allenai.github.io/lumos/">
     <img src="https://img.shields.io/badge/🌐-Website-red">
@@ -14,6 +14,8 @@
   </a> 
 </p>
 
+🖋 **Authors:** [Da Yin](https://wadeyin9712.github.io/), [Faeze Brahman](https://fabrahman.github.io/), [Abhilasha Ravichander](https://www.cs.cmu.edu/~aravicha/), [Khyathi Chandu](https://www.cs.cmu.edu/~kchandu/), [Kai-Wei Chang](http://web.cs.ucla.edu/~kwchang/), [Yejin Choi](https://homes.cs.washington.edu/~yejin/), [Bill Yuchen Lin](https://yuchenlin.xyz/)
+
 We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Modular** Design, and **Open-Source** LLMs. **Lumos** unifies a suite of complex interactive tasks and achieves competitive performance with GPT-4/3.5-based and larger open-source agents. 
 
 ‼️ **Lumos** has following features:
@@ -23,7 +25,7 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Mod
   - **Lumos** is trained with ~40K high-quality annotations from ground-truth reasoning steps in existing benchmarks with GPT-4. 
 * 🚀 **Competitive Performance**:
   - 🚀 **Lumos** outperforms **GPT-4/3.5-based** agents on complex QA and web tasks, and **larger open agents** on maths tasks.
-  - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **unmodularized** training.
+  - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **integrated** training.
   - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
  
 ## 🤩 Citation
