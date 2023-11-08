@@ -1,4 +1,4 @@
-# 🪄 Lumos: Language Agents with Unified Data Formats, Modular Design, and Open-Source LLMs
+# 🪄 Lumos: Lumos: Learning Agents with Unified Data, Modular Design, and Open-Source LLMs
 <p align="center">
   <a href="https://allenai.github.io/lumos/">
     <img src="https://img.shields.io/badge/🌐-Website-red">
