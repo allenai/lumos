@@ -196,21 +196,22 @@
           We introduce 🪄 <strong>Lumos</strong>, Language Agents with Unified Data Formats, Modular Design, and Open-Source LLMs. <strong>Lumos</strong> unifies a suite of complex interactive tasks and achieves competitive performance with GPT-4/3.5-based and larger open-source agents. 
           <br><br><span class="dnerf">Lumos</span> has following features: 
           <ul>
-            <li><strong>🧩 Modular Architecture</strong>
+            <li><strong>🧩 A General Agent Modular Framework</strong>
               <ul>
-              <li><strong>Lumos</strong> consists of planning, grounding, and execution modules built based on LLAMA-2-7B.</li>
+              <li><strong>Lumos</strong> consists of planning, grounding, and execution modules built based on LLAMA-2-7B and off-the-shelf APIs. <strong>Lumos</strong> utilizes a unified data format that encompasses multiple task types, thereby enabling the developed agent framework to conveniently support a range of interactive tasks.</li>
               </ul>
             </li> 
             <li><strong>🌍 Diverse Training Data</strong>
               <ul>
-              <li><strong>Lumos</strong> is trained with ~40K diverse annotations from ground-truth reasoning steps in existing benchmarks with GPT-4.</li>
+              <li><strong>Lumos</strong> is trained with ~40K diverse high-quality subgoal/action annotations from ground-truth reasoning steps in existing benchmarks with GPT-4. Our gathered data can be instrumental for future research in developing open-source agents for complex interactive tasks.</li>
               </ul>
             </li>
             <li><strong>🚀 Competitive Performance</strong>
               <ul>
-              <li>🚀 <strong>Lumos</strong> beats GPT-4/3.5-based agents on complex QA/web tasks, and larger open agents on maths tasks.</li>
+              <li>🚀 <strong>Lumos</strong> beats GPT-4/3.5-based agents on web/complex QA tasks such as Mind2Web and HotpotQA, and larger open agents on math tasks.</li>
+              <li>🚀 <strong>Lumos</strong> exceeds it even outperforms contemporaneous agents that have been fine-tuned with in-domain HotpotQA and Mind2Web annotations, with examples including FiReAct and AgentLM.</li>
               <li>🚀 <strong>Lumos</strong> outperforms open agent baseline formulations like chain-of-thoughts and integrated training.</li>
-              <li>🚀 <strong>Lumos</strong> surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.</li>
+              <li>🚀 <strong>Lumos</strong> surpasses larger open LLM agents and domain-specific agents by a large margin on an unseen task, WebShop.</li>
               </ul>
             </li>
           </ul>
