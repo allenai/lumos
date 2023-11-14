@@ -67,8 +67,8 @@ cd data
 python -c "import gdown; gdown.download_folder('https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing', quiet=True)" 
 ```
 
-We also provide generated annotations for planning and grounding modules in 🤗 Huggingface Datasets. 
-| Dataset Names | 🤗 Huggingface Links  |
+We also provide generated annotations for planning and grounding modules in 🤗 Hugging Face Datasets. 
+| Dataset Names | 🤗 Hugging Face Links  |
 |----------------|----------------|
 | lumos_complex_qa_iterative    |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_iterative)        |
 | lumos_complex_qa_onetime         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_onetime), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_onetime)         |
@@ -85,8 +85,8 @@ We also provide generated annotations for planning and grounding modules in 🤗
 
 You can adjust the fine-tuning hyperparameters and specific task you want to fine-tune in the training scripts such as `finetune_llama2_plan_iterative.sh` in [`scripts/train`](./scripts/train).
 
-We also provide the fine-tuned planning and grounding module checkpoints in 🤗 Huggingface.
-| Model Names | 🤗 Huggingface Links  |
+We also provide the fine-tuned planning and grounding module checkpoints in 🤗 Hugging Face.
+| Model Names | 🤗 Hugging Face Links  |
 |----------------|----------------|
 | lumos_complex_qa_iterative    |  [Planning](https://huggingface.co/ai2lumos/lumos_complex_qa_plan_iterative), [Grounding](https://huggingface.co/ai2lumos/lumos_complex_qa_ground_iterative)        |
 | lumos_complex_qa_onetime         |  [Planning](https://huggingface.co/ai2lumos/lumos_complex_qa_plan_onetime), [Grounding](https://huggingface.co/ai2lumos/lumos_complex_qa_ground_onetime)         |
