@@ -3,7 +3,7 @@
   <a href="https://allenai.github.io/lumos/">
     <img src="https://img.shields.io/badge/🌐-Website-red">
   </a>
-  <a href="">
+  <a href="https://arxiv.org/abs/2311.05657">
     <img src="https://img.shields.io/badge/📝-Paper-blue">
   </a>
   <a href="https://huggingface.co/datasets?sort=trending&search=ai2lumos">
@@ -36,8 +36,9 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Mod
 If you find this work is relevant with your research, please feel free to cite our work!
 ```
 @article{yin2023lumos,
-  title={Lumos: Language Agents with Unified Data Formats, Modular Design, and Open-Source LLMs},
+  title={{Lumos: Learning Agents with Unified Data, Modular Design, and Open-Source LLMs}},
   author={Yin, Da and Brahman, Faeze and Ravichander, Abhilasha and Chandu, Khyathi and Chang, Kai-Wei and Choi, Yejin and Lin, Bill Yuchen},
+  journal={arXiv preprint arXiv:2311.05657},
   year={2023}
 }
 ```
