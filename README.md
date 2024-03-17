@@ -23,16 +23,16 @@ We introduce 🪄**Lumos**, Language Agents with **Unified** Data Formats, **Mod
 
 ‼️ **Lumos** has following features:
 * 🧩 **Modular Architecture**:
-  - 🧩 **Lumos** consists of planning, grounding, and execution modules built based on LLAMA-2-7B and off-the-shelf APIs.
+  - 🧩 **Lumos** consists of planning, grounding, and execution modules built based on LLAMA-2-7B/13B and off-the-shelf APIs.
   - 🤗 **Lumos** utilizes a unified data format that encompasses multiple task types, thereby enabling the developed agent framework to conveniently support a range of interactive tasks.
 * 🌍 **Diverse Training Data**:
-  - 🌍 **Lumos** is trained with ~40K diverse high-quality subgoal/action annotations from ground-truth reasoning steps in existing benchmarks with GPT-4.
+  - 🌍 **Lumos** is trained with ~56K diverse high-quality subgoal/action annotations from ground-truth reasoning steps in existing benchmarks with GPT-4.
   - ⚒️ **Lumos** data can be instrumental for future research in developing open-source agents for complex interactive tasks.
 * 🚀 **Competitive Performance**:
-  - 🚀 **Lumos** is comparable or even beats **GPT-series** agents on web/complex QA tasks Mind2Web and HotpotQA, and **larger open agents** on math tasks.
-  - 🚀 **Lumos** exceeds contemporaneous agents that have been **fine-tuned** with in-domain HotpotQA and Mind2Web annotations, such as **FiReAct** and **AgentLM**.
+  - 🚀 **Lumos** is comparable or even beats **GPT-series** agents on web/complex QA tasks Mind2Web and HotpotQA, and **larger open agents** on math and multimodal tasks.
+  - 🚀 **Lumos** exceeds contemporaneous agents that have been **fine-tuned** with in-domain HotpotQA, Mind2Web and ScienceQA annotations, such as **FiReAct**, **AgentLM**, and **AutoAct**.
   - 🚀 **Lumos** performs better than open agent baseline formulations including **chain-of-thoughts** and **integrated** training.
-  - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on an unseen task, WebShop.
+  - 🚀 **Lumos** surpasses larger open LLM agents and domain-specific agents on unseen tasks, WebShop and InterCode_SQL.
  
 ## 🤩 Citation
 
