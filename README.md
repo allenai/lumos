@@ -57,7 +57,7 @@ If you find this work is relevant with your research, please feel free to cite o
  
 ## 🧩 Architecture
 <p align="center">
-<img src=assets/lumos.png width=800/>
+<img src=assets/lumos.png width=850/>
 </p>
 
 ## 🛠️ Setup
@@ -80,6 +80,7 @@ We also provide generated annotations for planning and grounding modules in 🤗
 | lumos_complex_qa_iterative    |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_iterative)        |
 | lumos_complex_qa_onetime         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_plan_onetime), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_complex_qa_ground_onetime)         |
 | lumos_web_agent_iterative  |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_web_agent_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_web_agent_ground_iterative)     |
+| lumos_multimodal_iterative  |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_multimodal_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_multimodal_ground_iterative)     |
 | lumos_maths_iterative         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_maths_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_maths_ground_iterative)       |
 | lumos_maths_onetime         |  [Planning](https://huggingface.co/datasets/ai2lumos/lumos_maths_plan_onetime), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_maths_ground_onetime)    |
 | lumos_unified_iterative     | [Planning](https://huggingface.co/datasets/ai2lumos/lumos_unified_plan_iterative), [Grounding](https://huggingface.co/datasets/ai2lumos/lumos_unified_ground_iterative)    |
@@ -117,7 +118,7 @@ Evaluation scripts for different datasets are under [`scripts/eval`](./scripts/e
 We provide the code for generating training annotations based on raw existing benchmarks from scratch. 
 
 Before generating annotations, we first need to download the existing benchmarks providing ground-truth intermediate reasoning steps. 
-The raw data are can be downloaded via this [Google Drive folder](https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing).
+The raw data are can be downloaded via this [Google Drive folder](https://drive.google.com/drive/folders/1ASFhOkhezgewVxR01dQg-8KUVR8IdBlY?usp=sharing). 
 ```
 python -m data.prompt_convertion \
   --domain DOMAIN \
@@ -125,6 +126,8 @@ python -m data.prompt_convertion \
   --convert_all
 ```
 `domain` covers maths, complex QA, web agent, multimodal. `data_fn` is the path where raw benchmarks are stored.
+
+For multimodal task annotation generation, please download [COCO 2017 train images](http://images.cocodataset.org/zips/train2017.zip) in `data/train/multimodal/raw_data` and unzip it.
 
 ## ❤️ Acknowledgement
 We greatly thank Tulu team for providing awesome [code](https://github.com/allenai/open-instruct) to finetune LLAMA-2. We also sincerely appreciate the contributors of [zeno-build](https://github.com/zeno-ml/zeno-build), [Mind2Web](https://github.com/OSU-NLP-Group/Mind2Web), and [WebShop](https://github.com/princeton-nlp/WebShop) for providing fast GPT prompting, HTML preprocessing and evaluation docker environment.
